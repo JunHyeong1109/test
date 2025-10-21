@@ -45,7 +45,7 @@ class _MealMatchSettingScreenState extends State<MealMatchSettingScreen> {
 
     final picked = await showCupertinoModalPopup<TimeOfDay?>(
       context: context,
-      builder: (_) {
+      builder: (popupContext) {
         return Container(
           height: 300,
           color: Colors.white,
@@ -58,7 +58,7 @@ class _MealMatchSettingScreenState extends State<MealMatchSettingScreen> {
                   children: [
                     CupertinoButton(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      onPressed: () => Navigator.pop(context, null),
+                      onPressed: () => Navigator.pop(popupContext, null),
                       child: const Icon(
                         CupertinoIcons.back,
                         color: Colors.black87,
@@ -78,7 +78,7 @@ class _MealMatchSettingScreenState extends State<MealMatchSettingScreen> {
                     ),
                     CupertinoButton(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      onPressed: () => Navigator.pop(context, temp),
+                      onPressed: () => Navigator.pop(popupContext, temp),
                       child: const Icon(
                         CupertinoIcons.check_mark,
                         color: Color(0xFFF29C50),
@@ -145,6 +145,7 @@ class _MealMatchSettingScreenState extends State<MealMatchSettingScreen> {
   // ---------- 시간 선택 ----------
   Future<void> _pickStartTime() async {
     final picked = await _pickTimeCupertino(title: '시작 시간', initial: startTime);
+    if (!mounted) return;
     if (picked == null) return;
     if (_isPast(picked)) {
       _showError('시작 시간은 현재 시간 이후만 선택할 수 있어요.');
@@ -163,6 +164,7 @@ class _MealMatchSettingScreenState extends State<MealMatchSettingScreen> {
       title: '종료 시간',
       initial: endTime ?? startTime,
     );
+    if (!mounted) return;
     if (picked == null) return;
     if (_isPast(picked)) {
       _showError('종료 시간은 현재 시간 이후만 선택할 수 있어요.');
